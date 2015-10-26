@@ -3,6 +3,6 @@ A text to Go string converter.
 # INSTALL
 
 ~~~
-go install github.com/yinyin/text2goquoted/cmd/text2goquoted
+go get -u github.com/yinyin/text2goquoted/cmd/text2goquoted
 ~~~
 
