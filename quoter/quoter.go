@@ -61,5 +61,5 @@ func QuoteText(wr io.Writer, rd io.Reader, pkgName string, constNamePrefix strin
 	if err := r.Err(); err != nil {
 		return err
 	}
-	return nil
+	return w.Flush()
 }
