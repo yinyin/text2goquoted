@@ -55,5 +55,8 @@ func QuoteText(wr io.Writer, rd io.Reader, pkgName string, constNamePrefix strin
 			lineCount = lineCount + 1
 		}
 	}
+	if err := r.Err(); err != nil {
+		return err
+	}
 	return nil
 }
