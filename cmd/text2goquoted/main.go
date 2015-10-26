@@ -14,6 +14,7 @@ func main() {
 	var constNamePrefix string
 	var keepPrefixSpace bool
 	var keepSuffixSpace bool
+	var keepNewLine bool
 	
 	flag.StringVar(&inputFilePath, "i", "", "input file path")
 	flag.StringVar(&outputFilePath, "o", "", "output file path")
@@ -22,6 +23,7 @@ func main() {
 	flag.StringVar(&constNamePrefix, "n", "-- ", "const name prefix")
 	flag.BoolVar(&keepPrefixSpace, "keep_prefix_space", false, "keep prefix spaces")
 	flag.BoolVar(&keepSuffixSpace, "keep_suffix_space", false, "keep suffix spaces")
+	flag.BoolVar(&keepNewLine, "keep_new_line", false, "keep new line character")
 
 	flag.Parse()
 	
@@ -52,7 +54,7 @@ func main() {
 	}
 	defer fpOut.Close()
 	
-	err = quoter.QuoteText(fpOut, fpIn, pkgName, constNamePrefix, keepPrefixSpace, keepSuffixSpace)
+	err = quoter.QuoteText(fpOut, fpIn, pkgName, constNamePrefix, keepPrefixSpace, keepSuffixSpace, keepNewLine)
 	if nil != err {
 		log.Fatal("cannot translate text to quote string file:", err)
 		return
