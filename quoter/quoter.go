@@ -68,7 +68,7 @@ func QuoteText(wr io.Writer, rd io.Reader, pkgName string, constNamePrefix strin
 			if err := outputLine(w, bufferedLine, "", lineCount); nil != err {
 				return err
 			}
-			currentConstName := strings.TrimSpace(line[len(constNamePrefix):len(line)])
+			currentConstName := strings.TrimSpace(line[len(constNamePrefix):])
 			w.WriteString("const ")
 			w.WriteString(currentConstName)
 			w.WriteString(" string = ")

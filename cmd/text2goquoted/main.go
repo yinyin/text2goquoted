@@ -15,7 +15,7 @@ func main() {
 	var keepPrefixSpace bool
 	var keepSuffixSpace bool
 	var keepNewLine bool
-	
+
 	flag.StringVar(&inputFilePath, "i", "", "input file path")
 	flag.StringVar(&outputFilePath, "o", "", "output file path")
 	flag.StringVar(&pkgName, "package", "", "package name")
@@ -26,7 +26,7 @@ func main() {
 	flag.BoolVar(&keepNewLine, "keep_new_line", false, "keep new line character")
 
 	flag.Parse()
-	
+
 	if "" == inputFilePath {
 		fmt.Fprint(os.Stderr, "ERR: input path not given.\n")
 		return
@@ -39,21 +39,21 @@ func main() {
 		fmt.Fprint(os.Stderr, "ERR: package name not given.\n")
 		return
 	}
-	
+
 	fpIn, err := os.Open(inputFilePath)
 	if nil != err {
 		log.Fatal("cannot open input file for read:", err)
 		return
 	}
 	defer fpIn.Close()
-	
+
 	fpOut, err := os.Create(outputFilePath)
 	if nil != err {
 		log.Fatal("cannot open output file for write:", err)
 		return
 	}
 	defer fpOut.Close()
-	
+
 	err = quoter.QuoteText(fpOut, fpIn, pkgName, constNamePrefix, keepPrefixSpace, keepSuffixSpace, keepNewLine)
 	if nil != err {
 		log.Fatal("cannot translate text to quote string file:", err)
@@ -61,4 +61,3 @@ func main() {
 	}
 	return
 }
-
