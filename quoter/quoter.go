@@ -33,7 +33,7 @@ func convertSingleLine(w *bufio.Writer, keepPrefixSpace bool, keepSuffixSpace bo
 	w.WriteString(getStringFinish())
 }
 
-func QuoteText(rd io.Reader, wr io.Writer, pkgName string, constNamePrefix string, keepPrefixSpace bool, keepSuffixSpace bool) (err error) {
+func QuoteText(wr io.Writer, rd io.Reader, pkgName string, constNamePrefix string, keepPrefixSpace bool, keepSuffixSpace bool) (err error) {
 	r := bufio.NewScanner(rd)
 	w := bufio.NewWriter(wr)
 	w.WriteString("package ")
