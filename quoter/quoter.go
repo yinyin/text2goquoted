@@ -8,14 +8,14 @@ import "unicode"
 
 func getStringLead(count int) (l string) {
 	if 0 == count {
-		return "\""
+		return ""
 	} else {
-		return "\t+ \""
+		return "\t+ "
 	}
 }
 
 func getStringFinish() (l string) {
-	return "\"\n"
+	return "\n"
 }
 
 func convertSingleLine(w *bufio.Writer, keepPrefixSpace bool, keepSuffixSpace bool, line string, count int) {
