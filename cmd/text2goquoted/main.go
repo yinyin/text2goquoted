@@ -11,6 +11,7 @@ func main() {
 	var inputFilePath string
 	var outputFilePath string
 	var pkgName string
+	var constMarkOutPrefixes quoter.MarkOutStrings
 	var constNamePrefix string
 	var keepPrefixSpace bool
 	var keepSuffixSpace bool
@@ -20,6 +21,7 @@ func main() {
 	flag.StringVar(&outputFilePath, "o", "", "output file path")
 	flag.StringVar(&pkgName, "package", "", "package name")
 	flag.StringVar(&pkgName, "p", "", "package name (short hand)")
+	flag.Var(&constMarkOutPrefixes, "mark_out", "const mark-out prefix for dropping lines")
 	flag.StringVar(&constNamePrefix, "n", "-- ", "const name prefix")
 	flag.BoolVar(&keepPrefixSpace, "keep_prefix_space", false, "keep prefix spaces")
 	flag.BoolVar(&keepSuffixSpace, "keep_suffix_space", false, "keep suffix spaces")
@@ -39,6 +41,10 @@ func main() {
 		fmt.Fprint(os.Stderr, "ERR: package name not given.\n")
 		return
 	}
+	if (nil == constMarkOutPrefixes) || (0 == len(constMarkOutPrefixes)) {
+		constMarkOutPrefixes = append(constMarkOutPrefixes, "-- {{{")
+		constMarkOutPrefixes = append(constMarkOutPrefixes, "-- }}}")
+	}
 
 	fpIn, err := os.Open(inputFilePath)
 	if nil != err {
@@ -54,7 +60,7 @@ func main() {
 	}
 	defer fpOut.Close()
 
-	err = quoter.QuoteText(fpOut, fpIn, pkgName, constNamePrefix, keepPrefixSpace, keepSuffixSpace, keepNewLine)
+	err = quoter.QuoteText(fpOut, fpIn, pkgName, constMarkOutPrefixes, constNamePrefix, keepPrefixSpace, keepSuffixSpace, keepNewLine)
 	if nil != err {
 		log.Fatal("cannot translate text to quote string file:", err)
 		return
