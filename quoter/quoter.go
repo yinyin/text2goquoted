@@ -1,10 +1,33 @@
 package quoter
 
+import "fmt"
 import "io"
 import "bufio"
 import "strconv"
 import "strings"
 import "unicode"
+
+
+type MarkOutStrings []string
+
+func (m *MarkOutStrings) String() (t string) {
+	return fmt.Sprintf("%v", *m)
+}
+
+func (m *MarkOutStrings) Set(v string) (err error) {
+	*m = append(*m, v)
+	return nil
+}
+
+func (m *MarkOutStrings) PrefixCheck(line string) (result bool) {
+	for _, markOutString := range *m {
+		if strings.HasPrefix(line, markOutString) {
+			return true
+		}
+	}
+	return false
+}
+
 
 func getStringLead(count int) (l string) {
 	if 0 == count {
@@ -52,7 +75,7 @@ func outputLine(w *bufio.Writer, line string, suffix string, count int) (err err
 	return nil
 }
 
-func QuoteText(wr io.Writer, rd io.Reader, pkgName string, constNamePrefix string, keepPrefixSpace bool, keepSuffixSpace bool, keepNewLine bool) (err error) {
+func QuoteText(wr io.Writer, rd io.Reader, pkgName string, markOutStrings MarkOutStrings, constNamePrefix string, keepPrefixSpace bool, keepSuffixSpace bool, keepNewLine bool) (err error) {
 	r := bufio.NewScanner(rd)
 	w := bufio.NewWriter(wr)
 	w.WriteString("package ")
@@ -64,6 +87,9 @@ func QuoteText(wr io.Writer, rd io.Reader, pkgName string, constNamePrefix strin
 
 	for r.Scan() {
 		line := r.Text()
+		if markOutStrings.PrefixCheck(line) {
+			continue
+		}
 		if strings.HasPrefix(line, constNamePrefix) {
 			if err := outputLine(w, bufferedLine, "", lineCount); nil != err {
 				return err
